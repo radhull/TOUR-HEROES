@@ -19,7 +19,7 @@ export class HeroService {
         // return Promise.resolve(HEROES);
         return this.http.get(this.heroesUrl)
             .toPromise()
-            .then(response => response.json().data as Hero[])
+            .then(response => (response.json().data as Hero[]).map(x => new Hero(x.id, x.name, x.state)))
             .catch(this.handleError);
     }
 
@@ -58,7 +58,7 @@ export class HeroService {
     create(name: string): Promise<Hero> {
         return this.http.post(this.heroesUrl, JSON.stringify({name: name}), {headers: this.headers})
                         .toPromise()
-                        .then(response => response.json().data)
+                        .then(response => response.json().data as Hero)
                         .catch(this.handleError);
     }
 
